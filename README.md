@@ -1,6 +1,8 @@
 # NLPCC-2016-WordSim
 Code for NLPCC2016 Chinese Word Similarity Task
+
 This is our solution for [NLPCC2016 shared task: Chinese Word Similarity Measurement](http://tcci.ccf.org.cn/conference/2016/pages/page05_CFPTasks.html).
+
 >This task provides a dataset of Chinese word similarity to evaluate and compare different semantic measures of lexical similarity, including 500 word pairs and their similarity scores.
 
 We proposes a novel framework for measuring the Chinese word similarity by combining word embedding and Tongyiic Cilin. We also utilize retrieval techniques to extend the contexts of word pairs and calculate the similarity scores to weakly supervise the selection of a better result. 
