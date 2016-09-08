@@ -12,6 +12,52 @@ import codecs
 from gensim.models.word2vec import Word2Vec
 import string
 import numpy
+import theano
+
+
+def prepare_data(seqs, labels, maxlen=None, dis_vecs=None):
+    """Create the matrices from the datasets.
+
+    This pad each sequence to the same lenght: the lenght of the
+    longuest sequence or maxlen.
+
+    if maxlen is set, we will cut all sequence to this maximum
+    lenght.
+
+    This swap the axis!
+    """
+    # x: a list of sentences
+    lengths = [len(s) for s in seqs]
+
+    if maxlen is not None:
+        new_seqs = []
+        new_labels = []
+        new_lengths = []
+        new_dis_vecs = []
+        for l, s, y, d in zip(lengths, seqs, labels, dis_vecs):
+            if l < maxlen:
+                new_seqs.append(s)
+                new_labels.append(y)
+                new_lengths.append(l)
+                new_dis_vecs.append(d)
+        lengths = new_lengths
+        labels = new_labels
+        seqs = new_seqs
+        dis_vecs = new_dis_vecs
+
+        if len(lengths) < 1:
+            return None, None, None, None
+
+    n_samples = len(seqs)
+    maxlen = numpy.max(lengths)
+
+    x = numpy.zeros((maxlen, n_samples)).astype('int64')
+    x_mask = numpy.zeros((maxlen, n_samples)).astype(theano.config.floatX)
+    for idx, s in enumerate(seqs):
+        x[:lengths[idx], idx] = s
+        x_mask[:lengths[idx], idx] = 1.
+
+    return x, x_mask, labels, dis_vecs
 
 
 def filter_lines(lines):

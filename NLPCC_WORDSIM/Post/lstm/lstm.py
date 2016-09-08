@@ -6,7 +6,6 @@ from __future__ import print_function
 import sys
 import time
 from collections import OrderedDict
-from Post import post
 import numpy
 import six.moves.cPickle as pickle
 import theano
@@ -14,7 +13,6 @@ import theano.tensor as tensor
 from theano import config
 from theano.sandbox.rng_mrg import MRG_RandomStreams as RandomStreams
 import matplotlib.pyplot as plt
-import imdb
 import prepare_input
 from Com import macro
 from Eval import eval
@@ -23,8 +21,7 @@ import seaborn as sns
 from pandas import DataFrame
 import codecs
 from Post import merge
-import copy
-from sklearn.decomposition import PCA
+
 
 theano.config.floatX = 'float32'
 config.floatX = 'float32'
@@ -621,7 +618,7 @@ def train_lstm(
     model_options = locals().copy()
     print("model options", model_options)
     load_data = prepare_input.load_data
-    prepare_data = imdb.prepare_data
+    prepare_data = prepare_input.prepare_data
     print('Loading data')
     train, valid, test, dis_vecs_train, ids_train, dis_vecs_valid, ids_valid, dis_vecs_test, ids_test = load_data(
         n_words=n_words, valid_portion=0.05,
@@ -857,7 +854,7 @@ def test_lstm(
     model_options = locals().copy()
     print("model options", model_options)
     load_data = prepare_input.load_data
-    prepare_data = imdb.prepare_data
+    prepare_data = prepare_input.prepare_data
     print('Loading data')
     train, valid, test, dis_vecs_train, ids_train, dis_vecs_valid, ids_valid, dis_vecs_test, ids_test = load_data(
         n_words=n_words, valid_portion=0.05,
