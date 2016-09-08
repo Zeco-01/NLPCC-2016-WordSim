@@ -9,11 +9,7 @@
 from Com import utils
 from Com import macro
 import codecs
-
-import similar_char
-import get_pattern_sim
-import get_seq_sim
-import get_pinyin_sim
+import get_sims
 import get_web_features
 
 
@@ -30,14 +26,14 @@ def write_features(word_list_file_name):
     out_file = codecs.open(macro.WORD_LIST_PATH + 'features_golden_new.txt', 'w', 'utf-8')
     out_file.write(
         'ID\tWord1\tWord2\tweb-jaccard\tweb-overlap\tweb-dice\tweb-pmi\tpinyin_sim\tseq_sim\tpattern_sim\t\r\n')
-    sim_dict = similar_char.load_sim_dict()
+    sim_dict = get_sims.load_sim_dict()
     for wp in word_pairs:
         features = []
         web_features = get_web_features.get_web_features(wp.word1, wp.word2)
         features.extend(web_features)
-        features.append(get_pinyin_sim.get_pinyin_sim(wp.word1, wp.word2))
-        features.append(get_seq_sim.get_seq_sim(wp.word1, wp.word2))
-        features.append(get_pattern_sim.get_pattern_sim(wp.word1, wp.word2, sim_dict))
+        features.append(get_sims.get_pinyin_sim(wp.word1, wp.word2))
+        features.append(get_sims.get_seq_sim(wp.word1, wp.word2))
+        features.append(get_sims.get_pattern_sim(wp.word1, wp.word2, sim_dict))
         out_file.write(fea_2_line(wp.id, wp.word1, wp.word2, features))
     out_file.close()
 
