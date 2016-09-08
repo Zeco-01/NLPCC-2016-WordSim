@@ -119,5 +119,6 @@ def extract_from_baidu_news(word_file):
         i += 1
     return
 
+
 if __name__ == '__main__':
     extract_from_baidu_news(macro.DICT_DIR + '/fml_origin_vocab_half1.txt')

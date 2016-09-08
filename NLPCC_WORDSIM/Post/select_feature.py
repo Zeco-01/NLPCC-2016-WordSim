@@ -27,7 +27,7 @@ def get_value_list(filename, lst):
     data = utils.load_features(filename)
     # min_max_scaler = preprocessing.MinMaxScaler(feature_range=(1, 10))
     # data = min_max_scaler.fit_transform(data)
-    #data = data.dot(10)
+    # data = data.dot(10)
     for row in data:
         sum = 0
         i = 0
@@ -70,4 +70,4 @@ if __name__ == '__main__':
         #     plt.savefig('%s/%s.png' %(macro.PICS_DIR,str(lst)))
         # print lst, sp
         i += 1
-    print max,best
+    print max, best

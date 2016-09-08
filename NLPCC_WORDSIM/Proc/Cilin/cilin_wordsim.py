@@ -10,7 +10,7 @@ from Eval import eval
 
 if __name__ == '__main__':
     # 同义词林计算dry run数据
-    ofname = macro.NLPCC_DRY_FILE.split('.')[0]+'_cilin.txt'
+    ofname = macro.NLPCC_DRY_FILE.split('.')[0] + '_cilin.txt'
     print 'spearman', eval.evaluate(macro.RESULTS_DIR, ofname, mode='spearman')
     print 'pearson', eval.evaluate(macro.RESULTS_DIR, ofname, mode='pearson')
 
@@ -18,4 +18,3 @@ if __name__ == '__main__':
     # ofname = macro.NLPCC_FML_GD_FILE.split('.')[0] + '_cilin.txt'
     # print 'spearman', eval.evaluate(macro.RESULTS_DIR, ofname, mode='spearman')
     # print 'pearson', eval.evaluate(macro.RESULTS_DIR, ofname, mode='pearson')
-

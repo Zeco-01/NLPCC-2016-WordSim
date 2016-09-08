@@ -18,7 +18,7 @@ def filter_lines(lines):
     result = []
     for line in lines:
         words = line.encode('utf-8').strip().split(' ')
-        if len(words)>2:
+        if len(words) > 2:
             result.append(line)
     return result
 
@@ -75,7 +75,7 @@ def get_text(w1=None, w2=None):
     scores = []
     text = []
     dis_vecs = []
-    for idw,word1,word2,s in zip(idl,w1l,w2l,score):
+    for idw, word1, word2, s in zip(idl, w1l, w2l, score):
 
         try:
             infile = codecs.open(macro.DICT_DIR + '/filter/' + word1 + '_' + word2 + '.txt',
@@ -165,53 +165,50 @@ def load_data(part, n_words=100000, valid_portion=0.1, maxlen=None,
     scores = get_round(scores)
     temp, ids = numberize(texts)
     l = len(temp)
-    part_len = l/5
-    all_set = [temp,scores]
+    part_len = l / 5
+    all_set = [temp, scores]
 
     part11 = all_set[0][0:part_len]
-    part12 = all_set[0][part_len:2*part_len]
-    part13 = all_set[0][2*part_len:3*part_len]
-    part14 = all_set[0][3*part_len:4*part_len]
-    part15 = all_set[0][4*part_len:l]
-    parts1=[part11,part12,part13,part14,part15]
-
+    part12 = all_set[0][part_len:2 * part_len]
+    part13 = all_set[0][2 * part_len:3 * part_len]
+    part14 = all_set[0][3 * part_len:4 * part_len]
+    part15 = all_set[0][4 * part_len:l]
+    parts1 = [part11, part12, part13, part14, part15]
 
     part21 = all_set[1][0:part_len]
-    part22 = all_set[1][part_len:2*part_len]
-    part23 = all_set[1][2*part_len:3*part_len]
-    part24 = all_set[1][3*part_len:4*part_len]
-    part25 = all_set[1][4*part_len:l]
-    parts2=[part21,part22,part23,part24,part25]
-
+    part22 = all_set[1][part_len:2 * part_len]
+    part23 = all_set[1][2 * part_len:3 * part_len]
+    part24 = all_set[1][3 * part_len:4 * part_len]
+    part25 = all_set[1][4 * part_len:l]
+    parts2 = [part21, part22, part23, part24, part25]
 
     d_part1 = dis_vecs[0:part_len]
-    d_part2 = dis_vecs[part_len:2*part_len]
-    d_part3 = dis_vecs[2*part_len:3*part_len]
-    d_part4 = dis_vecs[3*part_len:4*part_len]
-    d_part5 = dis_vecs[4*part_len:l]
-    d_parts = [d_part1,d_part2,d_part3,d_part4,d_part5]
+    d_part2 = dis_vecs[part_len:2 * part_len]
+    d_part3 = dis_vecs[2 * part_len:3 * part_len]
+    d_part4 = dis_vecs[3 * part_len:4 * part_len]
+    d_part5 = dis_vecs[4 * part_len:l]
+    d_parts = [d_part1, d_part2, d_part3, d_part4, d_part5]
 
     id_part1 = ids[0:part_len]
-    id_part2 = ids[part_len:2*part_len]
-    id_part3 = ids[2*part_len:3*part_len]
-    id_part4 = ids[3*part_len:4*part_len]
-    id_part5 = ids[4*part_len:l]
-    id_parts = [id_part1,id_part2,id_part3,id_part4,id_part5]
+    id_part2 = ids[part_len:2 * part_len]
+    id_part3 = ids[2 * part_len:3 * part_len]
+    id_part4 = ids[3 * part_len:4 * part_len]
+    id_part5 = ids[4 * part_len:l]
+    id_parts = [id_part1, id_part2, id_part3, id_part4, id_part5]
 
-
-    train_set = [[],[]]
+    train_set = [[], []]
     ids_train = []
     dis_vecs_train = []
-    for i in range(0,5):
-        if i!=part-1:
+    for i in range(0, 5):
+        if i != part - 1:
             train_set[0].extend(parts1[i])
             train_set[1].extend(parts2[i])
             ids_train.extend(id_parts[i])
             dis_vecs_train.extend(d_parts[i])
 
-    test_set = [parts1[part-1],parts2[part-1]]
-    dis_vecs_test = d_parts[part-1]
-    ids_test = id_parts[part-1]
+    test_set = [parts1[part - 1], parts2[part - 1]]
+    dis_vecs_test = d_parts[part - 1]
+    ids_test = id_parts[part - 1]
 
     if maxlen:
         new_train_set_x = []

@@ -10,12 +10,10 @@ import codecs
 import string
 from sklearn import preprocessing
 
-
 from Com import macro
 from Eval import eval
 from Com import utils
 import merge
-
 
 
 # 读取特征文件，放缩各个特征后计算一个相似度得分 lst:开关列表
@@ -38,7 +36,6 @@ def get_value_list(filename, lst):
                 pass
         values.append(sum / count)
     return values
-
 
 
 # 从文件中读取相似度得分，默认读取一万条，文件不足一万条则全部读取，读取数量由num指定
@@ -87,26 +84,29 @@ def extract():
     file_list.close()
     file_old.close()
 
+
 def small(pred):
     results = []
     sum = 0
     count = 0
     for p in pred:
         results.append(p)
-        if p!=10:
-            sum+=p
-            count+=1
-    mean = sum*1.0/count
-    for i in range(0,len(results)):
-        if results[i]==10:
+        if p != 10:
+            sum += p
+            count += 1
+    mean = sum * 1.0 / count
+    for i in range(0, len(results)):
+        if results[i] == 10:
             results[i] = mean
     return results
+
 
 def merge2max(s1, s2):
     result = []
     for ss1, ss2 in zip(s1, s2):
         result.append(max([ss1, ss2]))
     return result
+
 
 if __name__ == '__main__':
     golden_score = read_score(macro.CORPUS_DIR + '/500_2.csv')
@@ -134,7 +134,7 @@ if __name__ == '__main__':
     #         max = temp
     #         final_list = score_m
     #     print '合并：',macro.MODES[mode - 1]+'/fml_org_google_en_w2v_org.result\t',temp,'\t',temp2
-        # print macro.MODES[mode-1] + ' vs cal_value: ', eval.spearman(score_m,data)[0]
+    # print macro.MODES[mode-1] + ' vs cal_value: ', eval.spearman(score_m,data)[0]
     # outfile = codecs.open(macro.CORPUS_DIR+'/replace1andaverage.txt','w','utf-8')
     # for f in final_list:
     #     outfile.write(str(f)+'\r\n')
@@ -162,7 +162,7 @@ if __name__ == '__main__':
     #
     #
     for i in range(1, 6):
-        last_scores.append(merge.merge_2_list(macro.RESULTS_DIR + '/lstm_w2v' + str(i) + '.txt',f_c,mode=macro.MAX))
+        last_scores.append(merge.merge_2_list(macro.RESULTS_DIR + '/lstm_w2v' + str(i) + '.txt', f_c, mode=macro.MAX))
     idl, w1l, w2l, score_goldern, headline = utils.read2wordlist([(macro.CORPUS_DIR, '500_2.csv')])
     temp = last_scores[0]
     for s in last_scores[1:]:
@@ -170,7 +170,7 @@ if __name__ == '__main__':
         temp = max_score
     print ('max_score: ', eval.spearman(max_score, score_goldern), eval.pearson(max_score, score_goldern))
     sss = small(max_score)
-    print eval.spearman(sss,score_goldern)
+    print eval.spearman(sss, score_goldern)
     # dataset = {
     #     'pred': max_score,
     #     'goldern': score_goldern

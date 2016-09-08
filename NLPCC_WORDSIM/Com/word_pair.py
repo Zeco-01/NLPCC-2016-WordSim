@@ -6,8 +6,9 @@
     @function:
 """
 
+
 class WordPair:
-    def __init__(self,id,word1,word2):
+    def __init__(self, id, word1, word2):
         self.id = id
         self.word1 = word1
         self.word2 = word2

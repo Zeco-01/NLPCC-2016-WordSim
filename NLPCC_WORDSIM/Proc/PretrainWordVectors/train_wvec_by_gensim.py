@@ -15,13 +15,14 @@ import seaborn as sns
 import os
 from pandas import DataFrame
 from translate import Translator
+
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
 
 class MyWordVec:
     def __init__(self, f_tuple_list, seg_docs_dir_list, mode='tag'):
         self.mode = mode  # tag:有正确答案的，格式为(ID,Word1,Word2,Score,Prediction)；no_tag:没有正确答案的，格式为(ID,Word1,Word2,Score)
-        self.f_tuple_list = f_tuple_list            # 评价的词对文件，[(dir_1,file_1),...,(dir_n,file_n)]
+        self.f_tuple_list = f_tuple_list  # 评价的词对文件，[(dir_1,file_1),...,(dir_n,file_n)]
         self.seg_docs_dir_list = seg_docs_dir_list  # 分好词的语料文件，[(dir_1,file_1),...,(dir_n,file_n),dir_m]
 
     # 训练语料得到w2v模型
@@ -29,9 +30,9 @@ class MyWordVec:
         # 抽取语料中的句子放入list，每个元素是分好词的句子
         sentences = []
         for seg_docs_dir in self.seg_docs_dir_list:
-            if type(seg_docs_dir) == tuple:     # 如果是一个文件(dir,file)，则将指定文件的内容作为语境语料
+            if type(seg_docs_dir) == tuple:  # 如果是一个文件(dir,file)，则将指定文件的内容作为语境语料
                 sens = utils.atxt2sens(seg_docs_dir[0], seg_docs_dir[1])
-            else:                               # 如果是目录dir:默认只挑选出评测词表对应的语境语料进行训练；如果指定词表文件，则按照词表筛选语境
+            else:  # 如果是目录dir:默认只挑选出评测词表对应的语境语料进行训练；如果指定词表文件，则按照词表筛选语境
                 sens = utils.f_tuple_list2sens(self.f_tuple_list, seg_docs_dir, fvocab, self.mode)
             sentences.extend(sens)
         # gensim训练w2v model
@@ -47,16 +48,16 @@ class MyWordVec:
         # 读入评测词对语料
         id_list, word1_list, word2_list, manu_sim_list, headline = utils.read2wordlist(self.f_tuple_list, mode='tag')
         # 新的题头
-        new_headline = headline.strip()+'\tPrediction\n'
+        new_headline = headline.strip() + '\tPrediction\n'
         # 计算相似度
         auto_sim_list = []
         for w1, w2, manu_sim in zip(word1_list, word2_list, manu_sim_list):
             try:
-                auto_sim = w2v_model.similarity(w1, w2)     # 向量余弦相似度[-1,1]
-                auto_sim = utils.convert_sim(auto_sim)      # 将余弦相似度放到1-10得分
+                auto_sim = w2v_model.similarity(w1, w2)  # 向量余弦相似度[-1,1]
+                auto_sim = utils.convert_sim(auto_sim)  # 将余弦相似度放到1-10得分
                 print '%-10s\t%-10s\t%-10s\t%-10s' % (w1, w2, manu_sim, auto_sim)
             except:
-                auto_sim = 1                                # 未登录词，为了区分1.0，赋值为１
+                auto_sim = 1  # 未登录词，为了区分1.0，赋值为１
                 print '%-10s\t%-10s\t%-10s\t%-10s' % (w1, w2, manu_sim, '______Not Found______')
             auto_sim_list.append(auto_sim)
 
@@ -86,7 +87,6 @@ class MyWordVec:
 
         return word1_list, word2_list, manu_sim_list, auto_sim_list, new_headline
 
-
     # 加载预先训练好的大规模语料的词表,计算相似度
     def calculate_sim_without_tag(self, load_model, ofname, write_flag=True):
         # 加载指定w2v model
@@ -94,16 +94,16 @@ class MyWordVec:
         # 读入评测词对语料
         id_list, word1_list, word2_list, headline = utils.read2wordlist(self.f_tuple_list, mode='no_tag')
         # 新的题头
-        new_headline = headline.strip()+'\tPrediction\n'
+        new_headline = headline.strip() + '\tPrediction\n'
         # 计算相似度
         auto_sim_list = []
         for w1, w2 in zip(word1_list, word2_list):
             try:
-                auto_sim = w2v_model.similarity(w1, w2)     # 向量余弦相似度[-1,1]
-                auto_sim = utils.convert_sim(auto_sim)      # 将余弦相似度放到1-10得分
+                auto_sim = w2v_model.similarity(w1, w2)  # 向量余弦相似度[-1,1]
+                auto_sim = utils.convert_sim(auto_sim)  # 将余弦相似度放到1-10得分
                 print '%-10s\t%-10s\t%-10s' % (w1, w2, auto_sim)
             except:
-                auto_sim = 1                                # 未登录词，为了区分1.0，赋值为１
+                auto_sim = 1  # 未登录词，为了区分1.0，赋值为１
                 print '%-10s\t%-10s\t%-10s' % (w1, w2, '______Not Found______')
             auto_sim_list.append(auto_sim)
 
@@ -136,7 +136,8 @@ class MyWordVec:
             print 'load previous model....'
             model = Word2Vec.load_word2vec_format(r'%s/%s' % (macro.MODELS_DIR, save_model), binary=True)
         else:
-            model = Word2Vec(sentences, sg=1, size=300, window=10, negative=0, hs=1, sample=1e-4, workers=8, min_count=5)
+            model = Word2Vec(sentences, sg=1, size=300, window=10, negative=0, hs=1, sample=1e-4, workers=8,
+                             min_count=5)
 
         # 评价相似度
         auto_sim_list = []
@@ -146,7 +147,7 @@ class MyWordVec:
                 auto_sim = utils.convert_sim(auto_sim)
                 # print '%-10s\t%-10s\t%-10s\t%-10s' % (w1, w2, manu_sim, auto_sim)
             except:
-                auto_sim = 1        # 为了区分没有找到的情况，用１代替1.0
+                auto_sim = 1  # 为了区分没有找到的情况，用１代替1.0
                 print '%-10s\t%-10s\t%-10s\t%-10s' % (w1, w2, manu_sim, '______Not Found______')
             auto_sim_list.append(auto_sim)
 
@@ -177,6 +178,7 @@ class MyWordVec:
             end = time.clock()
             print 'total time = %ss' % (end - start)
             print 'iter=%s;\tval=%s' % (i, val)
+
 
 # ===============================Dry Run==========================================
 # 1. NLPCC样例数据+数据堂语料
@@ -346,7 +348,8 @@ def dry_ext_bdnews_xieso():
 # 6.1 NLPCC样例数据_原始词表_百度新闻语料_爬取的www.xieso.net造句语料_数据堂语料
 def dry_org_bdnews_xieso_datatang():
     f_tuple_list = [(macro.CORPUS_DIR, macro.NLPCC_DRY_FILE)]  # 评价的多个文件
-    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR, (macro.BIG_CORPUS_SEG_DIR, macro.DATATANG_SEG_FILE)]  # 分词文档所在的所有目录
+    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR,
+                         (macro.BIG_CORPUS_SEG_DIR, macro.DATATANG_SEG_FILE)]  # 分词文档所在的所有目录
 
     # 对象实例化(评测词对语料，分好词的语境语料，有无标签)
     mw2v_obj = MyWordVec(f_tuple_list, seg_docs_dir_list, mode='tag')
@@ -360,13 +363,15 @@ def dry_org_bdnews_xieso_datatang():
         mw2v_obj.train_model(save_model=model_name, fvocab=macro.DRY_ORG_VOCAB_DICT)
 
     # 计算相似度，并默认将结果写入文件
-    mw2v_obj.calculate_sim(load_model=model_name, ofname=macro.DRY_ORG_BDNEWS_XIESO_DATATANG_RESULT, write_flag=write_flag)
+    mw2v_obj.calculate_sim(load_model=model_name, ofname=macro.DRY_ORG_BDNEWS_XIESO_DATATANG_RESULT,
+                           write_flag=write_flag)
 
 
 # 6.2 NLPCC样例数据_扩展词表_百度新闻语料_爬取的www.xieso.net造句语料_数据堂语料
 def dry_ext_bdnews_xieso_datatang():
     f_tuple_list = [(macro.CORPUS_DIR, macro.NLPCC_DRY_FILE)]  # 评价的多个文件
-    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR, (macro.BIG_CORPUS_SEG_DIR, macro.DATATANG_SEG_FILE)]  # 分词文档所在的所有目录
+    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR,
+                         (macro.BIG_CORPUS_SEG_DIR, macro.DATATANG_SEG_FILE)]  # 分词文档所在的所有目录
 
     # 对象实例化(评测词对语料，分好词的语境语料，有无标签)
     mw2v_obj = MyWordVec(f_tuple_list, seg_docs_dir_list, mode='tag')
@@ -380,13 +385,15 @@ def dry_ext_bdnews_xieso_datatang():
         mw2v_obj.train_model(save_model=model_name, fvocab=macro.DRY_EXT_VOCAB_DICT)
 
     # 计算相似度，并默认将结果写入文件
-    mw2v_obj.calculate_sim(load_model=model_name, ofname=macro.DRY_EXT_BDNEWS_XIESO_DATATANG_RESULT, write_flag=write_flag)
+    mw2v_obj.calculate_sim(load_model=model_name, ofname=macro.DRY_EXT_BDNEWS_XIESO_DATATANG_RESULT,
+                           write_flag=write_flag)
 
 
 # 7.1 NLPCC样例数据_原始词表_百度新闻语料_爬取的www.xieso.net造句语料_wiki语料
 def dry_org_bdnews_xieso_wiki():
     f_tuple_list = [(macro.CORPUS_DIR, macro.NLPCC_DRY_FILE)]  # 评价的多个文件
-    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR, (macro.BIG_CORPUS_SEG_DIR, macro.WIKI_SEG_FILE)]  # 分词文档所在的所有目录
+    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR,
+                         (macro.BIG_CORPUS_SEG_DIR, macro.WIKI_SEG_FILE)]  # 分词文档所在的所有目录
 
     # 对象实例化(评测词对语料，分好词的语境语料，有无标签)
     mw2v_obj = MyWordVec(f_tuple_list, seg_docs_dir_list, mode='tag')
@@ -406,7 +413,8 @@ def dry_org_bdnews_xieso_wiki():
 # 7.2 NLPCC样例数据_原始词表_百度新闻语料_爬取的www.xieso.net造句语料_wiki语料
 def dry_ext_bdnews_xieso_wiki():
     f_tuple_list = [(macro.CORPUS_DIR, macro.NLPCC_DRY_FILE)]  # 评价的多个文件
-    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR, (macro.BIG_CORPUS_SEG_DIR, macro.WIKI_SEG_FILE)]  # 分词文档所在的所有目录
+    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR,
+                         (macro.BIG_CORPUS_SEG_DIR, macro.WIKI_SEG_FILE)]  # 分词文档所在的所有目录
 
     # 对象实例化(评测词对语料，分好词的语境语料，有无标签)
     mw2v_obj = MyWordVec(f_tuple_list, seg_docs_dir_list, mode='tag')
@@ -645,7 +653,8 @@ def formal_ext_bdnews_xieso():
 # -6.1 NLPCC样例数据_原始词表_百度新闻语料_爬取的www.xieso.net造句语料_数据堂语料
 def formal_org_bdnews_xieso_datatang():
     f_tuple_list = [(macro.CORPUS_DIR, macro.NLPCC_FML_FILE)]  # 评价的多个文件
-    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR, (macro.BIG_CORPUS_SEG_DIR, macro.DATATANG_SEG_FILE)]  # 分词文档所在的所有目录
+    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR,
+                         (macro.BIG_CORPUS_SEG_DIR, macro.DATATANG_SEG_FILE)]  # 分词文档所在的所有目录
 
     # 对象实例化(评测词对语料，分好词的语境语料，有无标签)
     mw2v_obj = MyWordVec(f_tuple_list, seg_docs_dir_list, mode='tag')
@@ -659,13 +668,15 @@ def formal_org_bdnews_xieso_datatang():
         mw2v_obj.train_model(save_model=model_name, fvocab=macro.FML_ORG_VOCAB_DICT)
 
     # 计算相似度，并默认将结果写入文件
-    mw2v_obj.calculate_sim(load_model=model_name, ofname=macro.FML_ORG_BDNEWS_XIESO_DATATANG_RESULT, write_flag=write_flag)
+    mw2v_obj.calculate_sim(load_model=model_name, ofname=macro.FML_ORG_BDNEWS_XIESO_DATATANG_RESULT,
+                           write_flag=write_flag)
 
 
 # -6.2 NLPCC样例数据_扩展词表_百度新闻语料_爬取的www.xieso.net造句语料_数据堂语料
 def formal_ext_bdnews_xieso_datatang():
     f_tuple_list = [(macro.CORPUS_DIR, macro.NLPCC_FML_FILE)]  # 评价的多个文件
-    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR, (macro.BIG_CORPUS_SEG_DIR, macro.DATATANG_SEG_FILE)]  # 分词文档所在的所有目录
+    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR,
+                         (macro.BIG_CORPUS_SEG_DIR, macro.DATATANG_SEG_FILE)]  # 分词文档所在的所有目录
 
     # 对象实例化(评测词对语料，分好词的语境语料，有无标签)
     mw2v_obj = MyWordVec(f_tuple_list, seg_docs_dir_list, mode='tag')
@@ -679,7 +690,8 @@ def formal_ext_bdnews_xieso_datatang():
         mw2v_obj.train_model(save_model=model_name, fvocab=macro.FML_EXT_VOCAB_DICT)
 
     # 计算相似度，并默认将结果写入文件
-    mw2v_obj.calculate_sim(load_model=model_name, ofname=macro.FML_EXT_BDNEWS_XIESO_DATATANG_RESULT, write_flag=write_flag)
+    mw2v_obj.calculate_sim(load_model=model_name, ofname=macro.FML_EXT_BDNEWS_XIESO_DATATANG_RESULT,
+                           write_flag=write_flag)
 
 
 # -7.1 NLPCC样例数据_原始词表_百度新闻语料_爬取的www.xieso.net造句语料_wiki语料
@@ -706,7 +718,8 @@ def formal_org_bdnews_xieso_wiki():
 # -7.2 NLPCC样例数据_原始词表_百度新闻语料_爬取的www.xieso.net造句语料_wiki语料
 def formal_ext_bdnews_xieso_wiki():
     f_tuple_list = [(macro.CORPUS_DIR, macro.NLPCC_FML_FILE)]  # 评价的多个文件
-    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR, (macro.BIG_CORPUS_SEG_DIR, macro.WIKI_SEG_FILE)]  # 分词文档所在的所有目录
+    seg_docs_dir_list = [macro.BDNEWS_DOCS_SEG_DIR, macro.XIESO_DOCS_SEG_DIR,
+                         (macro.BIG_CORPUS_SEG_DIR, macro.WIKI_SEG_FILE)]  # 分词文档所在的所有目录
 
     # 对象实例化(评测词对语料，分好词的语境语料，有无标签)
     mw2v_obj = MyWordVec(f_tuple_list, seg_docs_dir_list, mode='tag')

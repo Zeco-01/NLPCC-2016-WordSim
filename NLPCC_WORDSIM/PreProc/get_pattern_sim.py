@@ -8,7 +8,7 @@
 import similar_char
 
 
-def get_pattern_sim(word1, word2,sim_dict):
+def get_pattern_sim(word1, word2, sim_dict):
     same_count = 0
     sim_count = 0
     temp = word2
@@ -32,6 +32,7 @@ def get_pattern_sim(word1, word2,sim_dict):
     sim_sim = 2 * sim_count * 1.0 / (len(word1) + len(word2))
     return same_sim + sim_sim
 
+
 if __name__ == '__main__':
     sim_dict = similar_char.load_sim_dict()
-    print get_pattern_sim(u'只管',u'尽管',sim_dict)
+    print get_pattern_sim(u'只管', u'尽管', sim_dict)

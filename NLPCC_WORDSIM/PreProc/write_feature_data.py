@@ -16,6 +16,7 @@ import get_seq_sim
 import get_pinyin_sim
 import get_web_features
 
+
 def fea_2_line(wpid, word1, word2, features):
     line = wpid + '\t' + word1 + '\t' + word2 + '\t'
     for f in features:

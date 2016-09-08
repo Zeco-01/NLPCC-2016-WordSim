@@ -450,11 +450,11 @@ def build_model(tparams, options):
         # vec_list2 = tensor.dot(dis2, mask2)
         vec_list1 = dis1 * mask1
         vec_list2 = dis2 * mask2
-        zeros_300=[0]*300
-        ones_300 = [1]*300
+        zeros_300 = [0] * 300
+        ones_300 = [1] * 300
         ones_300.extend(zeros_300)
         maskx = theano.shared(numpy.array(ones_300).transpose())
-        new_emb = tensor.dot(emb,maskx)
+        new_emb = tensor.dot(emb, maskx)
         # new_emb = tensor.add(emb, vec_list1)
         # new_emb = tensor.add(new_emb, vec_list2)
         new_emb = new_emb + vec_list1 + vec_list2
@@ -957,6 +957,6 @@ if __name__ == '__main__':
     idl, w1l, w2l, score_goldern, headline = utils.read2wordlist([(macro.CORPUS_DIR, '500_2.csv')])
     temp = last_scores[0]
     for s in last_scores[1:]:
-        max_score = merge2max(temp,s)
+        max_score = merge2max(temp, s)
         temp = max_score
-    print ('max_score: ',eval.spearman(max_score,score_goldern),eval.pearson(max_score,score_goldern))
+    print('max_score: ', eval.spearman(max_score, score_goldern), eval.pearson(max_score, score_goldern))

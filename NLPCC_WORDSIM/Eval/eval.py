@@ -14,7 +14,7 @@ def spearman(set_1, set_2):
     return spearmanr(set_1, set_2)
 
 
-def pearson(set_1,set_2):
+def pearson(set_1, set_2):
     return pearsonr(set_1, set_2)
 
 
@@ -31,8 +31,9 @@ def evaluate(fdir, fname, mode='spearman'):
     if mode == 'spearman':
         result = spearman(set_gordern, set_pred)
     elif mode == 'pearson':
-        result = pearsonr(set_gordern,set_pred)
+        result = pearsonr(set_gordern, set_pred)
     return result
+
 
 if __name__ == '__main__':
     pass

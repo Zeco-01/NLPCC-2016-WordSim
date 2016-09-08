@@ -26,7 +26,6 @@ def list2sen(list):
     return sen.decode('utf-8') + '\r\n'
 
 
-
 if __name__ == '__main__':
     sentences = []
     sens_baidu = utils.f_tuple_list2sens([(macro.CORPUS_DIR, '500_2.csv')], macro.BDNEWS_DOCS_SEG_DIR, '')

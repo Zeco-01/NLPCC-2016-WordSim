@@ -21,7 +21,8 @@ class HowNetSim:
     def __init__(self, f_tuple_list, mode='tag'):
         self.f_tuple_list = f_tuple_list
         if mode == 'tag':
-            self.id_list, self.word1_list, self.word2_list, self.manu_sim_list, self.headline = utils.read2wordlist(f_tuple_list, mode)
+            self.id_list, self.word1_list, self.word2_list, self.manu_sim_list, self.headline = utils.read2wordlist(
+                f_tuple_list, mode)
         elif mode == 'no_tag':
             self.id_list, self.word1_list, self.word2_list, self.headline = utils.read2wordlist(f_tuple_list, mode)
 
@@ -29,7 +30,7 @@ class HowNetSim:
 
     # 1.将我们的输入文件转成HowNet输入文件格式
     def prepare_hownet_input(self):
-        fw = open('%s/%s' % (macro.HOWNET_DIR, 'TestWords.Txt'), 'w')        # HowNet程序的输入文件
+        fw = open('%s/%s' % (macro.HOWNET_DIR, 'TestWords.Txt'), 'w')  # HowNet程序的输入文件
         for w1, w2 in zip(self.word1_list, self.word2_list):
             fw.write('%s\n%s\n\n' % (w1.encode('GB2312'), w2.encode('GB2312')))
         fw.close()
@@ -59,7 +60,7 @@ class HowNetSim:
                 abnormal_tags.append(True)
             else:
                 abnormal_tags.append(False)
-                fw.write('\n'.join(item)+'\n\n')
+                fw.write('\n'.join(item) + '\n\n')
         fw.close()
         return abnormal_tags
 
@@ -72,11 +73,12 @@ class HowNetSim:
         analysis_items = content.split('===================================================\n')[:-1]  # 去掉最后一空项
         results_items = [ana_item.split('\n')[-2] for ana_item in analysis_items]  # 跳过最后一个空项，倒数第二个
         fw = open('%s/%s' % (macro.RESULTS_DIR, self.ofname), 'w')
-        fw.write(self.headline.strip()+'\tauto_sim_score\n')
+        fw.write(self.headline.strip() + '\tauto_sim_score\n')
         auto_sim_list = []
-        for id, w1, w2, manu_sim, item in zip(self.id_list, self.word1_list, self.word2_list, self.manu_sim_list, results_items):
+        for id, w1, w2, manu_sim, item in zip(self.id_list, self.word1_list, self.word2_list, self.manu_sim_list,
+                                              results_items):
             word_pair, sim = item.strip().split(':')
-            auto_sim = np.float(sim)*9+1
+            auto_sim = np.float(sim) * 9 + 1
             auto_sim_list.append(auto_sim)
             ww1, ww2 = word_pair.split(',')
             if (w1 == ww1 and w2 == ww2) or (w1 == ww2 and w2 == ww1):
@@ -95,14 +97,15 @@ class HowNetSim:
         analysis_items = content.split('===================================================\n')[:-1]  # 去掉最后一空项
         results_items = [ana_item.split('\n')[-2] for ana_item in analysis_items]  # 跳过最后一个空项，倒数第二个
         fw = open('%s/%s' % (macro.RESULTS_DIR, self.ofname), 'w')
-        fw.write(self.headline.strip()+'\tauto_sim_score\n')
+        fw.write(self.headline.strip() + '\tauto_sim_score\n')
         auto_sim_list = []
-        for id, w1, w2, manu_sim, item in zip(self.id_list, self.word1_list, self.word2_list,self.manu_sim_list, results_items):
+        for id, w1, w2, manu_sim, item in zip(self.id_list, self.word1_list, self.word2_list, self.manu_sim_list,
+                                              results_items):
             word_pair, sim = item.strip().split(':')
             if np.float(sim) < 0:
                 auto_sim = 1
             else:
-                auto_sim = 9*np.float(sim)+1
+                auto_sim = 9 * np.float(sim) + 1
             auto_sim_list.append(auto_sim)
             ww1, ww2 = word_pair.split(',')
             if (w1 == ww1 and w2 == ww2) or (w1 == ww2 and w2 == ww1):
@@ -127,7 +130,7 @@ if __name__ == '__main__':
     # wordsim_obj.prepare_hownet_input()
     # wordsim_obj.formal_proc_hownet_output()
     # wordsim_obj.evalutaion()
-    
+
     # formal run 500有标记的
     f_tuple_list = [(macro.CORPUS_DIR, macro.NLPCC_FML_GD_FILE)]
     wordsim_obj = HowNetSim(f_tuple_list, 'tag')

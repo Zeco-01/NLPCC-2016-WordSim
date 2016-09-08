@@ -102,5 +102,5 @@ def crawl_all(word_list_file, num=0):
 
 
 if __name__ == '__main__':
-    #crawl_all(macro.WORD_LIST_PATH + 'test2.txt')
+    # crawl_all(macro.WORD_LIST_PATH + 'test2.txt')
     print 'test'

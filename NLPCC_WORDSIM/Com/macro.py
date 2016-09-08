@@ -25,15 +25,15 @@ RESULTS_DIR = r'%s/results' % NLPCC_DIR  # 输出的结果文件所在目录
 MODELS_DIR = r'%s/models' % NLPCC_DIR  # 词向量模型所在目录
 
 DOCS_ROOT_DIR = r'%s/docs' % NLPCC_DIR  # 爬取的互联网语料文件
-BDNEWS_DOCS_ORG_DIR = r'%s/org/baiduxinwen' % DOCS_ROOT_DIR   # 1.从【原始文档】抽取的一行一句、没分词的文档的目录
-BDNEWS_DOCS_SEG_DIR = r'%s/seg/baiduxinwen' % DOCS_ROOT_DIR   # 2.分词的文档的目录
+BDNEWS_DOCS_ORG_DIR = r'%s/org/baiduxinwen' % DOCS_ROOT_DIR  # 1.从【原始文档】抽取的一行一句、没分词的文档的目录
+BDNEWS_DOCS_SEG_DIR = r'%s/seg/baiduxinwen' % DOCS_ROOT_DIR  # 2.分词的文档的目录
 XIESO_DOCS_ORG_DIR = r'%s/seg/www.xieso.net' % DOCS_ROOT_DIR  # 1.从【原始文档】抽取的一行一句、没分词的文档的目录
 XIESO_DOCS_SEG_DIR = r'%s/seg/www.xieso.net' % DOCS_ROOT_DIR  # 2.分词的文档的目录
-BIG_CORPUS_SEG_DIR = r'%s/seg/big' % DOCS_ROOT_DIR            # 3.放置合并在一起的大规模互联网语料的目录
+BIG_CORPUS_SEG_DIR = r'%s/seg/big' % DOCS_ROOT_DIR  # 3.放置合并在一起的大规模互联网语料的目录
 HOWNET_DIR = r'D:/MyCode/WordSimilarityHowNet'  # 知网hownet程序放置的目录
-PICS_DIR = r'%s/pics' % NLPCC_DIR   # 图片放置的目录
-WORD_LIST_PATH = CORPUS_DIR  #词表路径
-SIM_DICT_PATH = r'%s/similar.txt' % DICT_DIR #形近字字典路径
+PICS_DIR = r'%s/pics' % NLPCC_DIR  # 图片放置的目录
+WORD_LIST_PATH = CORPUS_DIR  # 词表路径
+SIM_DICT_PATH = r'%s/similar.txt' % DICT_DIR  # 形近字字典路径
 
 # 公共文件
 DATATANG_SEG_FILE = r'datatang.seg'  # 大规模数据堂分好词的语料
@@ -50,7 +50,7 @@ DRY_EXT_VOCAB_DICT = r'dry_ext_vocab.txt'  # 同义词林扩展的词典
 
 # 模型
 DRY_DATATANG_W2V_MODEL = r'dry_datatang_w2v.bin'  # 用数据堂训练得到的词向量模型，二进制
-DRY_WIKI_W2V_MODEL = r'dry_wiki_w2v.bin'          # 用维基百科训练得到的词向量模型
+DRY_WIKI_W2V_MODEL = r'dry_wiki_w2v.bin'  # 用维基百科训练得到的词向量模型
 DRY_ORG_BDNEWS_W2V_MODEL = r'dry_org_bdnews_w2v.bin'  # 原始词表对应的词向量模型+百度新闻语料
 DRY_EXT_BDNEWS_W2V_MODEL = r'dry_ext_bdnews_w2v.bin'  # 用同义词林扩展词表的词向量模型+百度新闻语料
 DRY_ORG_XIESO_W2V_MODEL = r'dry_org_xieso_w2v.bin'  # 原始词表对应的词向量模型＋xieso造句语料
@@ -79,7 +79,6 @@ DRY_ORG_BDNEWS_XIESO_WIKI_RESULT = r'dry_org_bdnews_xieso_wiki.result'
 DRY_EXT_BDNEWS_XIESO_WIKI_RESULT = r'dry_ext_bdnews_xieso_wiki.result'
 DRY_ORG_BDNEWS_XIESO_DATATANG_WIKI_RESULT = r'dry_org_bdnews_xieso_datatang_wiki.result'
 DRY_EXT_BDNEWS_XIESO_DATATANG_WIKI_RESULT = r'dry_ext_bdnews_xieso_datatang_wiki.result'
-
 
 # =============================formal run==================================================
 # 数据
@@ -138,8 +137,8 @@ REPLACE_1 = 9
 REPLACE_1_AND_AVERAGE = 10
 REPLACE_1_AND_GEOMETRIC_MEAN = 11
 REPLACE_1_AND_MIN = 12
-MODES = ['Cilin only','word2vec only',  'average', 'max', 'min', 'replace 1 and 10', 'replace and average',
-         'geometric_mean','replace 1','replace 1 and average','replace 1 and geometric mean','replace 1 and min']
+MODES = ['Cilin only', 'word2vec only', 'average', 'max', 'min', 'replace 1 and 10', 'replace and average',
+         'geometric_mean', 'replace 1', 'replace 1 and average', 'replace 1 and geometric mean', 'replace 1 and min']
 N = pow(10, 16)  # 搜索引擎收录网页总数估计值
 
 if __name__ == '__main__':

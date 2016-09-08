@@ -34,7 +34,7 @@ for i, (word1, word2) in enumerate(wordsList):
                 sim_tmp.append(score)
                 # print word1, ',', word2, 'score:::', score
         if sim_tmp:
-            auto_sim = np.mean(sim_tmp)*9+1
+            auto_sim = np.mean(sim_tmp) * 9 + 1
         else:
             auto_sim = np.nan
     except:
