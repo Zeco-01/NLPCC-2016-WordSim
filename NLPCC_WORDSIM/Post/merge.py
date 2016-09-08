@@ -6,7 +6,6 @@
     @function:
 """
 import codecs
-from PreProc import functions
 import string
 import math
 from Com import macro

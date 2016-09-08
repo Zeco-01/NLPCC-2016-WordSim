@@ -10,7 +10,6 @@ from Com import utils
 from Com import macro
 import codecs
 import time
-import functions
 import similar_char
 import get_pattern_sim
 import get_seq_sim
@@ -32,7 +31,7 @@ def write_data(word_list_file, num, outfilename):
         line = infile.readline()
         cutlist = ',\t\r'.decode('utf-8')
         i += 1
-        words = functions.cut(cutlist, line)
+        words = utils.cut(cutlist, line)
         if len(words) == 0:
             break
 

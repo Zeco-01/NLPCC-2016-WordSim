@@ -5,12 +5,15 @@
     @step:
     @function: 存放一些公用函数
 """
+from Com import macro
+from bs4 import BeautifulSoup
+import re
+import codecs
+import math
 import os
 import numpy as np
-import math
-from Com import macro
-import codecs
 import word_pair
+
 
 
 # 读多个文件，提取word1_list, word2_list, manu_list
@@ -146,6 +149,44 @@ def read_word_list(word_list_file_name):
         word_pairs.append(wp)
     infile.close()
     return word_pairs
+
+# 去除无用的标签
+def remove_useless_tags(html):
+    soup = BeautifulSoup(html, 'lxml')
+    for tag in soup(['script', 'img', 'a', 'head', 'li', 'style']):
+        tag.extract()
+    return soup.get_text()
+
+def find_token(cut_list, char):
+    if char in cut_list:
+        return True
+    else:
+        return False
+
+
+def join(l):
+    text = ''
+    for i in l:
+        text += i
+    return text
+
+
+def cut(cut_list, text):
+    l = []
+    sentences = []
+    for char in text:
+        if find_token(cut_list, char):
+            sentence = join(l)
+            pattern = re.compile(r'\s+')
+            if not pattern.match(sentence):  # and len(sentence) > 4:
+                l.append(char)
+                sentences.append(join(l))
+                l = []
+            else:
+                l = []
+        else:
+            l.append(char)
+    return sentences
 
 
 if __name__ == '__main__':

@@ -5,14 +5,14 @@
     @step:
     @function:
 """
-
+from Com import utils
 from bs4 import BeautifulSoup
 import requests
 import urllib
 import os
 import codecs
 import string
-import functions
+
 
 
 def get_all_articles(word, failed_urls):
@@ -98,7 +98,7 @@ def extract_sentences(word):
                 tag.extract()
             full_text = bs.get_text()
             cut_list = '\s\t\f\r\n。！？ 　'.decode('utf-8')
-            sentences = functions.cut(cut_list, full_text)
+            sentences = utils.cut(cut_list, full_text)
             for s in sentences:
                 if string.find(s, word) != -1:
                     i += 1

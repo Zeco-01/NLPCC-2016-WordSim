@@ -6,13 +6,13 @@
     @function:爬取百度新闻语料
 """
 from Com import macro
+from Com import utils
 from bs4 import BeautifulSoup
 import requests
 import urllib
 import os
 import codecs
 import string
-import functions
 import threading
 
 
@@ -62,10 +62,10 @@ def extract(word):
             else:
                 article.encoding = encodings[0]
         article = article.text.encode('utf-8').decode('utf-8')
-        full_text = functions.remove_useless_tags(article)
+        full_text = utils.remove_useless_tags(article)
         # 分句
         cut_list = '\s\t\f\r\n。！？ 　'.decode('utf-8')
-        sentences = functions.cut(cut_list, full_text)
+        sentences = utils.cut(cut_list, full_text)
         for s in sentences:
             # 含有关键词则写文件
             if string.find(s, word) != -1:

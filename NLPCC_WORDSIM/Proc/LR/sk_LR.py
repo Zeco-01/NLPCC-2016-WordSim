@@ -14,11 +14,9 @@ import urllib
 import math
 import codecs
 from Com import macro
-from PreProc import functions
 from sklearn import preprocessing
 from sklearn.linear_model import LogisticRegression
 import numpy
-from Eval import eval
 
 
 

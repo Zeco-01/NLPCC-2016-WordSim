@@ -6,14 +6,12 @@
     @function:爬取写搜网例句
 """
 from Com import macro
+from Com import utils
 import codecs
 import urllib
 import requests
 import string
-
 import threading
-import functions
-
 import os
 
 """
@@ -23,11 +21,11 @@ import os
 
 # 从获取到的html中抽取句子
 def extract_from_html(word, html, pagenum):
-    text = functions.remove_useless_tags(html)
+    text = utils.remove_useless_tags(html)
     cut_list = '!?.\t\r\n。！？'.decode('utf-8')
     # 含有关键词的句子列表
     sentences = []
-    for s in functions.cut(cut_list, text):
+    for s in utils.cut(cut_list, text):
         if string.find(s, word) != -1:
             sentences.append(s)
     if len(sentences) > 0:
