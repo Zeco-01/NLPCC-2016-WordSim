@@ -32,7 +32,8 @@ XIESO_DOCS_SEG_DIR = r'%s/seg/www.xieso.net' % DOCS_ROOT_DIR  # 2.分词的文�
 BIG_CORPUS_SEG_DIR = r'%s/seg/big' % DOCS_ROOT_DIR            # 3.放置合并在一起的大规模互联网语料的目录
 HOWNET_DIR = r'D:/MyCode/WordSimilarityHowNet'  # 知网hownet程序放置的目录
 PICS_DIR = r'%s/pics' % NLPCC_DIR   # 图片放置的目录
-
+WORD_LIST_PATH = CORPUS_DIR  #词表路径
+SIM_DICT_PATH = r'%s/similar.txt' % DICT_DIR #形近字字典路径
 
 # 公共文件
 DATATANG_SEG_FILE = r'datatang.seg'  # 大规模数据堂分好词的语料
@@ -140,7 +141,6 @@ REPLACE_1_AND_MIN = 12
 MODES = ['Cilin only','word2vec only',  'average', 'max', 'min', 'replace 1 and 10', 'replace and average',
          'geometric_mean','replace 1','replace 1 and average','replace 1 and geometric mean','replace 1 and min']
 N = pow(10, 16)  # 搜索引擎收录网页总数估计值
-WORD_LIST_PATH = 'D:\\MyData\\NLPCC_DATA\\corpus\\'  #词表路径
-SIM_DICT_PATH = 'D:\\MyData\\NLPCC_DATA\\dicts\\similar.txt'  #形近字字典路径
+
 if __name__ == '__main__':
     pass
