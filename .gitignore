@@ -18,8 +18,8 @@ $RECYCLE.BIN/
 *.lnk
 
 # .idea
-#.idea/
-#NLPCC_WORDSIM/.idea/
+.idea/
+NLPCC_WORDSIM/.idea/
 
 # =========================
 # Operating System Files
