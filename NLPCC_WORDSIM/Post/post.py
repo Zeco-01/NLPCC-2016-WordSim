@@ -10,21 +10,19 @@ import codecs
 import string
 from sklearn import preprocessing
 
-from Proc.LR import sk_LR
+
 from Com import macro
 from Eval import eval
 from Com import utils
 import merge
-import seaborn as sns
-from pandas import DataFrame
-import matplotlib.pyplot as plt
+
 
 
 # 读取特征文件，放缩各个特征后计算一个相似度得分 lst:开关列表
 # [0, 0, 0, 1, 0, 1, 0] 0.320099049922
 def get_value_list(filename, lst):
     values = []
-    data = sk_LR.load_features(filename)
+    data = utils.load_features(filename)
     min_max_scaler = preprocessing.MinMaxScaler(feature_range=(1, 10))
     data = min_max_scaler.fit_transform(data)
     for row in data:

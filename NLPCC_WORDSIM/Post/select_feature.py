@@ -8,11 +8,7 @@
 import post
 from Com import macro
 from Eval import eval
-from Proc.LR import sk_LR
-from sklearn import preprocessing
-import matplotlib.pyplot as plt
-import seaborn as sns
-from pandas import DataFrame
+from Com import utils
 
 
 def add(lst):
@@ -28,7 +24,7 @@ def add(lst):
 
 def get_value_list(filename, lst):
     values = []
-    data = sk_LR.load_features(filename)
+    data = utils.load_features(filename)
     # min_max_scaler = preprocessing.MinMaxScaler(feature_range=(1, 10))
     # data = min_max_scaler.fit_transform(data)
     #data = data.dot(10)

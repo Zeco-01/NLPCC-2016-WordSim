@@ -13,7 +13,8 @@ import math
 import os
 import numpy as np
 import word_pair
-
+import numpy
+import string
 
 
 # 读多个文件，提取word1_list, word2_list, manu_list
@@ -115,7 +116,7 @@ def f_tuple_list2sens(f_tuple_list, fdir, fvocab, mode='tag'):  # fdir是分好�
 # 使用不同的方案将计算出的sim值放缩到1-10得分
 def convert_sim(auto_sim, mode=0):
     if 0 == mode:
-        auto_sim = 4.5*auto_sim+5.5
+        auto_sim = 4.5 * auto_sim + 5.5
     elif 1 == mode:
         if auto_sim <= 0:
             auto_sim = 1.0
@@ -128,7 +129,7 @@ def convert_sim(auto_sim, mode=0):
         elif auto_sim > 10:
             auto_sim = 10
     elif 3 == mode:
-        auto_sim = 0.5*auto_sim*auto_sim+4.5*auto_sim+5
+        auto_sim = 0.5 * auto_sim * auto_sim + 4.5 * auto_sim + 5
     return auto_sim
 
 
@@ -150,12 +151,14 @@ def read_word_list(word_list_file_name):
     infile.close()
     return word_pairs
 
+
 # 去除无用的标签
 def remove_useless_tags(html):
     soup = BeautifulSoup(html, 'lxml')
     for tag in soup(['script', 'img', 'a', 'head', 'li', 'style']):
         tag.extract()
     return soup.get_text()
+
 
 def find_token(cut_list, char):
     if char in cut_list:
@@ -187,6 +190,24 @@ def cut(cut_list, text):
         else:
             l.append(char)
     return sentences
+
+
+# 从文件中读取特征矩阵
+def load_features(filename):
+    infile = codecs.open(filename, 'r', 'utf-8')
+    data = numpy.empty((0, 7))
+    lines = infile.readlines()
+    lines.remove(lines[0])
+    for line in lines:
+        words = line.strip().split('\t')
+        if len(words) < 2:
+            break
+        f = []
+        for i in range(3, 10):
+            f.append(string.atof(words[i].strip()))
+        data = numpy.row_stack([data, f])
+    infile.close()
+    return data
 
 
 if __name__ == '__main__':
